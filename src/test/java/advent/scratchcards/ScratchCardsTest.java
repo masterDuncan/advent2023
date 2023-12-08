@@ -10,6 +10,9 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -181,6 +184,97 @@ public class ScratchCardsTest {
             assertThat(replicatedIds).contains(2);
             assertThat(replicatedIds).contains(3);
         }
+    }
+
+    @DisplayName("Count replicated cars")
+    @Nested
+    class CountReplicatedCards {
+
+        @DisplayName("when first card does not replicate - return one card")
+        @Test
+        void whenFirstCardDoesNotReplicate_returnOneCard() {
+            final int cardId1 = 1;
+            final List<Integer> winningNumbers1 = List.of(1);
+            final List<Integer> numbersWeHave1 = List.of(2);
+
+            final ScratchCard scratchCard1 = new ScratchCard(cardId1, winningNumbers1, numbersWeHave1);
+            final List<ScratchCard> allScratchCards = List.of(scratchCard1);
+
+            final Map<Integer, ScratchCard> allCardsGroupedById = allScratchCards.stream()
+                    .collect(Collectors.toMap(ScratchCard::getCardId, Function.identity()));
+
+            final int totalCards1 = scratchCard1.calculateTotalCardsGenerated(allCardsGroupedById);
+
+            assertThat(totalCards1).isEqualTo(1);
+        }
+
+        @DisplayName("when first card replicates once to a non replicated card - return two cards")
+        @Test
+        void whenFirstCardReplicatesOnceToANonReplicatedCard_returnTwoCards() {
+            final int cardId1 = 1;
+            final List<Integer> winningNumbers1 = List.of(1);
+            final List<Integer> numbersWeHave1 = List.of(1);
+
+            final int cardId2 = 2;
+            final List<Integer> winningNumbers2 = Collections.emptyList();
+            final List<Integer> numbersWeHave2 = Collections.emptyList();
+
+            final ScratchCard scratchCard1 = new ScratchCard(cardId1, winningNumbers1, numbersWeHave1);
+            final ScratchCard scratchCard2 = new ScratchCard(cardId2, winningNumbers2, numbersWeHave2);
+            final List<ScratchCard> allScratchCards = List.of(scratchCard1, scratchCard2);
+
+            final Map<Integer, ScratchCard> allCardsGroupedById = allScratchCards.stream()
+                    .collect(Collectors.toMap(ScratchCard::getCardId, Function.identity()));
+
+            final int totalCards1 = scratchCard1.calculateTotalCardsGenerated(allCardsGroupedById);
+            final int totalCards2 = scratchCard2.calculateTotalCardsGenerated(allCardsGroupedById);
+
+            assertThat(totalCards1).isEqualTo(2);
+            assertThat(totalCards2).isEqualTo(1);
+        }
+
+        @DisplayName("Test abridged example")
+        @Test
+        void testAbridgedExample() {
+            final List<String> lines = FileUtils.readLinesFromFile(Path.of("./src/test/resources/advent/scratchcards/abridgedinput"));
+
+            final List<ScratchCard> allScratchCards = Lists.newArrayList();
+            for (final String line : lines) {
+                allScratchCards.add(readScratchCard(line));
+            }
+
+            final Map<Integer, ScratchCard> allCardsGroupedById = allScratchCards.stream()
+                    .collect(Collectors.toMap(ScratchCard::getCardId, Function.identity()));
+
+            int totalCards = 0;
+            for (final ScratchCard scratchCard : allScratchCards) {
+                totalCards += scratchCard.calculateTotalCardsGenerated(allCardsGroupedById);
+            }
+
+            assertThat(totalCards).isEqualTo(30);
+        }
+
+        @DisplayName("Solve scratch card replication problem")
+        @Test
+        void solveScratchCardReplicationProblem() {
+            final List<String> lines = FileUtils.readLinesFromFile(Path.of("./src/test/resources/advent/scratchcards/input"));
+
+            final List<ScratchCard> allScratchCards = Lists.newArrayList();
+            for (final String line : lines) {
+                allScratchCards.add(readScratchCard(line));
+            }
+
+            final Map<Integer, ScratchCard> allCardsGroupedById = allScratchCards.stream()
+                    .collect(Collectors.toMap(ScratchCard::getCardId, Function.identity()));
+
+            int totalCards = 0;
+            for (final ScratchCard scratchCard : allScratchCards) {
+                totalCards += scratchCard.calculateTotalCardsGenerated(allCardsGroupedById);
+            }
+
+            assertThat(totalCards).isEqualTo(30);
+        }
+
 
     }
 

@@ -26,6 +26,7 @@ hs_err_pid*
 .idea/*
 target
 *.iml
+src/test/resources/
 
 # ignore the backupfiles of mvn versions:set
 *.versionsBackup
