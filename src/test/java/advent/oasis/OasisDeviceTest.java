@@ -105,7 +105,7 @@ public class OasisDeviceTest {
             final int[] sensorHistory = new int[]{27, 49, 92, 176};
             final int previousValue = OasisDevice.predictPreviousValue(sensorHistory);
 
-            assertThat(previousValue).isEqualTo(0);
+            assertThat(previousValue).isEqualTo(6);
         }
 
         @DisplayName("when sensor input has second-level values - predict backwards using difference")

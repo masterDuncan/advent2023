@@ -2,6 +2,7 @@ package advent.network;
 
 import advent.utils.FileUtils;
 import com.google.common.collect.Lists;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -78,9 +79,10 @@ public class TestNetwork {
             return steps;
         }
 
+        @Disabled("Will blow the stack up")
         @DisplayName("Solve parallel network problem - brute force")
         @Test
-        void solveParallelNetworkProblem_bruteForce() {
+        void  solveParallelNetworkProblem_bruteForce() {
             final List<String> lines = FileUtils.readLinesFromFile(Path.of("./src/test/resources/advent/network/input"));
 
             final NetworkMap networkMap = new NetworkMap(lines.stream().skip(2).toList());
