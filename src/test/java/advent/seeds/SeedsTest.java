@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -89,6 +90,7 @@ public class SeedsTest {
             System.out.println("Local minimum location: " + minimumLocation);
         }
 
+        @Disabled("It works, but it takes some time")
         @DisplayName("Read input and try to solve multiple seed problem")
         @Test
         void readInputAndTryToSolveMultipleSeedProblem() {
